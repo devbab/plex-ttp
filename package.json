@@ -1,0 +1,30 @@
+{
+  "name": "plex-ttp",
+  "version": "1.0.1",
+  "description": "Add Faces tags from TagThatPhoto to Plex",
+  "main": "plex-ttp.js",
+  "scripts": {
+    "eslint": "eslint --ignore-path  .eslintignore ./*.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Plex",
+    "TagThatPhoto",
+    "EXIF",
+    "Faces"
+  ],
+  "author": "devbab",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^6.0.1",
+    "csvtojson": "^2.0.10",
+    "etl": "^0.6.12",
+    "ev": "0.0.7",
+    "exiftool-vendored": "^10.0.0",
+    "minimist": "^1.2.0",
+    "os": "^0.1.1",
+    "sqlite3": "^4.1.1",
+    "superagent": "^5.2.2",
+    "unzipper": "^0.10.10"
+  }
+}
