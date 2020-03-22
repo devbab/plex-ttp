@@ -134,6 +134,5 @@ if (argv.d) {
     plex.end();
 }
 
-
 if (argv.s)
     DoMainScan();
