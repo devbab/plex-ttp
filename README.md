@@ -25,7 +25,7 @@ In case of any issues, [restore your database](https://support.plex.tv/articles/
     -h : show this help
 
 
-**node plex-ttp.js -s**   is the basic command to run to scan all photos from our Plex library, extract the tag faces and insert them into Plex. Face names are then available within the  [Tag list of Plex](http:plex_screenshot.jpg)
+**node plex-ttp.js -s**   is the basic command to run to scan all photos from our Plex library, extract the tag faces and insert them into Plex. Face names are then available within the  [Tag list of Plex](plex_screenshot.jpg)
 
 
 * * *
