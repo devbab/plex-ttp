@@ -60,7 +60,7 @@ function addColumnPlaceUpdate() {
 
 /**
  * look for photo library. used to find items in this library
- * returns id of photo library
+ * returns id(s) of photo library as comma separated string
  */
 function getPhotoLibraryId() {
 
@@ -69,9 +69,7 @@ function getPhotoLibraryId() {
 
     let stmt = db.prepare(sql);
     let rec = stmt.all(para);
-    //console.log(rec);
-
-    return rec[0].id;
+    return rec.map(elt=>elt.id).join(",");
 }
 
 /**
@@ -389,12 +387,12 @@ function updatePlaceImageTimestamp(mid) {
  */
 function scanPhotos(max = 0) {
 
-    let id = getPhotoLibraryId();
+    let ids = getPhotoLibraryId();
 
     let sql = `SELECT B.metadata_item_id as mid,A.file as file, 
                 B.TTP_updated_at as FaceUpdateTime, B.Place_updated_at as PlaceUpdateTime  
                 FROM media_parts as A, media_items as B 
-                WHERE A.media_item_id = B.id AND B.library_section_id = ${id} 
+                WHERE A.media_item_id = B.id AND B.library_section_id in (${ids})  
                 AND B.container = 'jpeg'  `;
     if (max != 0) sql += ` LIMIT ${max}`;
     let stmt = db.prepare(sql);
