@@ -1,7 +1,7 @@
 {
   "name": "plex-ttp",
   "version": "1.0.1",
-  "description": "Add Faces tags from TagThatPhoto to Plex",
+  "description": "Add Faces tags from TagThatPhoto to Plex, add places to photos with GPS coordinates (require HERE Maps freemium account)",
   "main": "plex-ttp.js",
   "scripts": {
     "eslint": "eslint --ignore-path  .eslintignore ./*.js",
@@ -15,7 +15,9 @@
     "Plex",
     "TagThatPhoto",
     "EXIF",
-    "Faces"
+    "Faces",
+    "places",
+    "HEREMaps"
   ],
   "author": "devbab",
   "license": "ISC",
