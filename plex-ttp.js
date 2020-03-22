@@ -15,18 +15,21 @@ const usage = `
     `;
 
 let exifProcessing = 0, // processing EXIF ongoing
-    statProcessing = 0; // stat file ongoing
-
+    statProcessing = 0, // stat file ongoing
+    nbUpdate = 0; // number of updates
 
 // Need to track when to end EXIF process and close DB connection
 // emitted when change in exifProcessing or statProcessing 
 const evHandler = function () {
-    //    console.log(`exifProcessing ${exifProcessing}   statProcessing ${statProcessing}`);
+    if (argv.debug)
+        console.log(`exifProcessing ${exifProcessing}   statProcessing ${statProcessing}`); // eslint-disable-line no-console
 
     if (exifProcessing <= 0 && statProcessing <= 0) {
         plex.cleanLoneTTPTags();
         exif.end();
         plex.end();
+        console.log(`Done : ${nbUpdate} update(s)`); // eslint-disable-line no-console
+
     }
 };
 
@@ -44,14 +47,13 @@ function DoMainScan() {
     // eslint-disable-next-line no-console
     console.log("Total photos", recs.length, "\n");
 
-
     function doTheUpdate(rec) {
         //console.log("doTheUpdate", rec.file);
         exifProcessing++;
 
         exif.getFromImage(rec.file)
             .then(data => {
-
+                nbUpdate++;
                 plex.deleteTTPTags(rec.mid); // delete any existing tags of the photo
                 plex.addTTPTags(rec.mid, data.faces); // add new tags
                 // eslint-disable-next-line no-console
@@ -66,11 +68,11 @@ function DoMainScan() {
             });
     }
 
-
     recs.forEach(rec => {
         //console.log(rec.file);
         if (!rec.FaceUpdateTime) rec.FaceUpdateTime = 0;
         let dateTTPUpdate = Date.parse(rec.FaceUpdateTime);
+
         statProcessing++;
         fs.stat(rec.file, (err, stat) => {
             statProcessing--;
@@ -79,6 +81,7 @@ function DoMainScan() {
             ev.emit("stat");
 
         });
+
 
     });
     //Assign the event handler to an event:
