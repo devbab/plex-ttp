@@ -112,11 +112,13 @@ if (argv.l) {
     plex.init();
 
     let res = plex.listTag(argv.l);
-    res = res.sort((a, b) => a.tag < b.tag ? -1 : a.tag > b.tag ? 1 : 0);
+    const nb = res.length;
+    res = res.map(elt=>elt.tag).sort().join(", ");
+    //res = res.sort((a, b) => a.tag < b.tag ? -1 : a.tag > b.tag ? 1 : 0);
     // eslint-disable-next-line no-console
     console.log(res);
     // eslint-disable-next-line no-console
-    console.log(`${res.length} entries`);
+    console.log(`\n${nb} entries`);
     plex.end();
 }
 
