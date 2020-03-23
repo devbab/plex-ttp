@@ -69,7 +69,9 @@ function getPhotoLibraryId() {
 
     let stmt = db.prepare(sql);
     let rec = stmt.all(para);
-    return rec.map(elt=>elt.id).join(",");
+    if (rec.length == 0) // no photo library
+        return [];
+    return rec.map(elt => elt.id).join(",");
 }
 
 /**
@@ -299,30 +301,30 @@ function addPlaceTags(mid, places) {
     //console.log("addPlaceTags for meta_item_id ", mid, places);
 
     const fields = [{
-        name: "city",
-        taggings: 3,
-        tags: 40
-    },
-    {
-        name: "county",
-        taggings: 2,
-        tags: 30
-    },
-    {
-        name: "district",
-        taggings: 1,
-        tags: 20
-    },
-    {
-        name: "country",
-        taggings: 0,
-        tags: 10
-    }
+            name: "city",
+            taggings: 3,
+            tags: 40
+        },
+        {
+            name: "county",
+            taggings: 2,
+            tags: 30
+        },
+        {
+            name: "district",
+            taggings: 1,
+            tags: 20
+        },
+        {
+            name: "country",
+            taggings: 0,
+            tags: 10
+        }
     ];
 
-    if (places.county == places.city && places.district )
-        places.county  = "";
-    
+    if (places.county == places.city && places.district)
+        places.county = "";
+
 
     for (let i = 0; i < fields.length; i++) {
         let field = fields[i];
@@ -339,7 +341,7 @@ function addPlaceTags(mid, places) {
         } else {
             // if not exists
             // eslint-disable-next-line no-console
-            console.log("Adding new place ",field.tags);
+            console.log("Adding new place ", field.tags);
 
             const sql = "INSERT INTO tags (tag, tag_type,tag_value, extra_data) VALUES (?, 400,?,'PLACE')";
             const stmt = db.prepare(sql);
@@ -388,6 +390,8 @@ function updatePlaceImageTimestamp(mid) {
 function scanPhotos(max = 0) {
 
     let ids = getPhotoLibraryId();
+    if (!ids)
+        return [];
 
     let sql = `SELECT B.metadata_item_id as mid,A.file as file, 
                 B.TTP_updated_at as FaceUpdateTime, B.Place_updated_at as PlaceUpdateTime  
@@ -436,5 +440,5 @@ module.exports = {
     deletePlaceTags: deletePlaceTags,
     deleteAllPlaceTags: deleteAllPlaceTags,
     addPlaceTags: addPlaceTags,
-    updatePlaceImageTimestamp:updatePlaceImageTimestamp
+    updatePlaceImageTimestamp: updatePlaceImageTimestamp
 };

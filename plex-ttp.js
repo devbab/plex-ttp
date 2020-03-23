@@ -40,12 +40,14 @@ function DoMainScan() {
     // read list des tags TTP existants
     plex.scanTTPTags();
 
-    // add a colum to bear datetime of TTP tag update
-    plex.addColumnTTPUpdate();
-
     let recs = plex.scanPhotos();
     // eslint-disable-next-line no-console
     console.log("Total photos", recs.length, "\n");
+    if (recs.length == 0)
+        return;
+
+    // add a colum to bear datetime of TTP tag update
+    plex.addColumnTTPUpdate();
 
     function doTheUpdate(rec) {
         //console.log("doTheUpdate", rec.file);
@@ -113,7 +115,7 @@ if (argv.l) {
 
     let res = plex.listTag(argv.l);
     const nb = res.length;
-    res = res.map(elt=>elt.tag).sort().join(", ");
+    res = res.map(elt => elt.tag).sort().join(", ");
     //res = res.sort((a, b) => a.tag < b.tag ? -1 : a.tag > b.tag ? 1 : 0);
     // eslint-disable-next-line no-console
     console.log(res);

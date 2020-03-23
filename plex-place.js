@@ -116,7 +116,7 @@ function runBatchGC() {
             });
         })
         .catch(err => {
-            console.error("Error requesting batch geocode", err.message); 
+            console.error("Error requesting batch geocode", err.message);
         });
 
 }
@@ -174,9 +174,9 @@ function addAddresses(gid) {
             let result = [],
                 empty = [];
             csv({
-                noheader: false,
-                delimiter: "|"
-            })
+                    noheader: false,
+                    delimiter: "|"
+                })
                 .fromString(txt)
                 .subscribe((json) => {
                     if (json.SeqNumber == "1")
@@ -224,7 +224,7 @@ function addAddresses(gid) {
 
         }))
         .catch(err => {
-            console.error("Error getting batch result", err.message); 
+            console.error("Error getting batch result", err.message);
         });
 }
 
@@ -254,7 +254,7 @@ function checkResultAvailable(gid) {
 
         })
         .catch(err => {
-            console.error("Error checking batch job",err.message); 
+            console.error("Error checking batch job", err.message);
         });
 }
 
@@ -262,10 +262,14 @@ function checkResultAvailable(gid) {
 function DoMainScan() {
 
     plex.init();
-    plex.addColumnPlaceUpdate();
 
     let recs = plex.scanPhotos();
-    //console.log("Photos ", recs);
+    // eslint-disable-next-line no-console
+    console.log("Total photos", recs.length, "\n");
+    if (recs.length == 0)
+        return;
+
+    plex.addColumnPlaceUpdate();
 
     function doTheUpdate(rec) {
 
