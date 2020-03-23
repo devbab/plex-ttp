@@ -297,22 +297,23 @@ function addTTPTags(mid, tags) {
  * @param {*} mid 
  * @param {object} {city,county,district,country} 
  */
-function addPlaceTags(mid, places) {
+function addPlaceTags(mid, addr) {
     //console.log("addPlaceTags for meta_item_id ", mid, places);
 
-    const fields = [{
+let places = { ...addr };
+    const fields = [
+          {
+            name: "district",   // arrondissement, quartier
+            taggings: 1,
+            tags: 40
+        },{
             name: "city",
             taggings: 3,
-            tags: 40
-        },
-        {
-            name: "county",
-            taggings: 2,
             tags: 30
         },
         {
-            name: "district",
-            taggings: 1,
+            name: "county", //department
+            taggings: 2,
             tags: 20
         },
         {
@@ -322,8 +323,17 @@ function addPlaceTags(mid, places) {
         }
     ];
 
-    if (places.county == places.city && places.district)
+
+    if (places.county == places.city)
         places.county = "";
+
+    // add city name to district to make it simpler to read
+    if (places.district  && places.city)
+        places.district  +=", "+ places.city;
+
+
+   // if (places.country == "France")
+//    console.log("place ", places);
 
 
     for (let i = 0; i < fields.length; i++) {
@@ -341,7 +351,7 @@ function addPlaceTags(mid, places) {
         } else {
             // if not exists
             // eslint-disable-next-line no-console
-            console.log("Adding new place ", field.tags);
+            console.log("====> Adding new place ", name, field.tags);
 
             const sql = "INSERT INTO tags (tag, tag_type,tag_value, extra_data) VALUES (?, 400,?,'PLACE')";
             const stmt = db.prepare(sql);

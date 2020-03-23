@@ -193,14 +193,14 @@ function addAddresses(gid) {
                     result.forEach(rec => {
                         let country = iso.whereAlpha3(rec.country).country;
 
-                        let addr = {
+                        const addr = {
                             city: rec.city,
                             county: rec.county,
                             district: rec.district,
                             country: country
                         };
                         let mids = matching[rec.recId].split(","); // get list of mids
-                        console.log(mids, addr); // eslint-disable-line no-console
+                        //console.log(mids, addr); // eslint-disable-line no-console
                         mids.forEach(mid => {
                             plex.deletePlaceTags(mid); // delete existing tags for this image
                             plex.addPlaceTags(mid, addr); // add new tags
@@ -222,10 +222,8 @@ function addAddresses(gid) {
                     plex.cleanLonePlaceTags();
                 });
 
-        }))
-        .catch(err => {
-            console.error("Error getting batch result", err.message);
-        });
+        }));
+
 }
 
 
