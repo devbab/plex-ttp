@@ -37,6 +37,11 @@ const evHandler = function () {
 function DoMainScan() {
     plex.init();
 
+    
+    // add a column to bear datetime of TTP tag update and place update
+    plex.addColumnTTPUpdate();
+    plex.addColumnPlaceUpdate();
+    
     // read list des tags TTP existants
     plex.scanTTPTags();
 
@@ -45,9 +50,6 @@ function DoMainScan() {
     console.log("Total photos", recs.length, "\n");
     if (recs.length == 0)
         return;
-
-    // add a colum to bear datetime of TTP tag update
-    plex.addColumnTTPUpdate();
 
     function doTheUpdate(rec) {
         //console.log("doTheUpdate", rec.file);
