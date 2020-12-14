@@ -82,7 +82,7 @@ function getPhotoLibraryId() {
 function getTTPTags(mid) {
 
     let sql = `SELECT A.id as tid,B.tag as tag   FROM taggings as A, tags as B 
-            WHERE A.metadata_item_id = ?
+            WHERE B.id = ?
             AND A.tag_id = B.id
             AND B.tag_type = 0
             AND B.extra_data='TTP'`;
